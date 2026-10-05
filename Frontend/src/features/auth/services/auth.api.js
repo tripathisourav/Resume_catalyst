@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 const api = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
     withCredentials: true
 })
 
@@ -35,6 +35,7 @@ export async function login({ email, password }) {
 
     } catch (err) {
         console.log(err)
+        throw err
     }
 
 }
@@ -61,6 +62,7 @@ export async function getMe() {
 
     } catch (err) {
         console.log(err)
+        throw err
     }
 
 }
