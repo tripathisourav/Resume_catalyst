@@ -18,6 +18,7 @@ export async function register({ username, email, password }) {
     } catch (err) {
 
         console.log(err)
+        throw err
 
     }
 
