@@ -6,10 +6,22 @@ const app = express()
 
 app.use(express.json())
 app.use(cookieParser())
+
+const allowedOrigins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    process.env.FRONTEND_URL
+].filter(Boolean)
+
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
-    credentials: true
+    origin: allowedOrigins,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
 }))
+
+app.get("/", (req, res) => {
+    res.json({ message: "Resume Catalyst API is running" })
+})
 
 /* require all the routes here */
 const authRouter = require("./routes/auth.routes")
