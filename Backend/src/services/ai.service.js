@@ -109,7 +109,9 @@ Return ONLY valid JSON (no markdown, no explanations) with this exact structure:
 }`
 
     try {
-        const model = genAI.getGenerativeModel({ model: "gemini-3-flash-preview" })
+        const model = genAI.getGenerativeModel({
+            model: process.env.GEMINI_MODEL || "gemini-2.5-flash"
+        })
         
         const response = await model.generateContent(prompt)
         
@@ -117,7 +119,11 @@ Return ONLY valid JSON (no markdown, no explanations) with this exact structure:
         const responseText = result.candidates[0].content.parts[0].text
         
         console.log("Raw AI Response:", responseText)
-        const parsedResponse = JSON.parse(responseText)
+        const jsonResponse = responseText
+            .replace(/^```(?:json)?\s*/i, "")
+            .replace(/\s*```$/, "")
+            .trim()
+        const parsedResponse = JSON.parse(jsonResponse)
         console.log("Parsed AI Response:", parsedResponse)
         
         return parsedResponse
